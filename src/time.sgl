@@ -1,0 +1,73 @@
+CREATE TABLE author(id SERIAL PRIMARY KEY,
+                    name VARCHAR(50),
+                    date_of_birth date,
+                    nationality VARCHAR(50));
+--email di koshyy
+ALTER TABLE  author ADD  COLUMN email VARCHAR(50);
+
+--nationality alup calyy
+ALTER  TABLE  author DROP  COLUMN  nationality;
+
+ALTER TABLE Author
+    ADD CONSTRAINT unique_email UNIQUE (email),
+    ALTER COLUMN name SET NOT NULL;
+
+ALTER TABLE Author
+    ALTER COLUMN name TYPE TEXT;
+
+ALTER TABLE Author RENAME TO Writers;
+
+INSERT INTO Writers (name, date_of_birth, email)
+VALUES
+    ('J.K. Rowling', '1965-07-31', 'jk.rowling@example.com'),
+    ('George Orwell', '1903-06-25', 'george.orwell@example.com');
+
+--Book
+CREATE TABLE Book (
+                      id SERIAL PRIMARY KEY,
+                      name VARCHAR(100),
+                      published_year INT,
+                      author INT,
+                      FOREIGN KEY (author) REFERENCES Writers(id)
+);
+
+ALTER TABLE Book
+    ADD CONSTRAINT unique_book_name UNIQUE (name),
+    ALTER COLUMN name SET NOT NULL;
+
+INSERT INTO Book (name, published_year, author)
+VALUES
+    ('Кareknen akkan koz jash','2001-02-03','Asan Yson uulu'),
+('По осколком твоего сердца','2003-03-02','Анна Джейн'),
+('Анын жошоосу кандай сонун','2005-08-01','Асылкерим Абдишукурович');
+
+CREATE TABLE Company (
+                         id SERIAL PRIMARY KEY,
+                         name VARCHAR(100) NOT NULL,
+                         sphere_of_activity VARCHAR(100) NOT NULL,
+                         founding_date DATE
+);
+
+INSERT INTO Company (name, sphere_of_activity, founding_date)
+VALUES
+    ('Tech Solutions', 'IT', '2000-05-15'),
+    ('Green Energy', 'Energy', '2010-09-01');
+
+CREATE TABLE Employee (
+                          id SERIAL PRIMARY KEY,
+                          first_name VARCHAR(50) NOT NULL,
+                          last_name VARCHAR(50) NOT NULL,
+                          position VARCHAR(100),
+                          salary DECIMAL(10, 2),
+                          company_id INT,
+                          birth_date DATE,
+                          FOREIGN KEY (company_id) REFERENCES Company(id)
+);
+
+INSERT INTO Employee (first_name, last_name, position, salary, company_id, birth_date)
+VALUES
+    ('John', 'Doe', 'Software Engineer', 80000.00, 1, '1985-04-23'),
+    ('Jane', 'Smith', 'Project Manager', 95000.00, 1, '1988-08-15'),
+    ('Michael', 'Brown', 'Sales Representative', 50000.00, 2, '1990-02-11'),
+    ('Sarah', 'Johnson', 'Marketing Manager', 70000.00, 2, '1987-11-07');
+
